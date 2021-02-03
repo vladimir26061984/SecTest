@@ -18,12 +18,20 @@ namespace SecurityTest
         /// <summary>
         /// Варианты ответов
         /// </summary>
-        public List<String> Answer;
+        public List<string> Answer;
+        /// <summary>
+        /// Список ссылок на файлы рисунков
+        /// </summary>
+        public List<string> PathFile;
 
         /// <summary>
         /// Вариант правильного ответа
         /// </summary>
         public int ValidAnswer;
+        /// <summary>
+        /// признак того, что на вопрос был получен правильный ответ
+        /// </summary>
+        public bool isOk;
 
         public Question()
         {
@@ -46,8 +54,9 @@ namespace SecurityTest
 
         public void setAnswer(string SSS)
         {
-            string[] res = SSS.Split('@');
-            for (int i = 0; i < res.Length; i++)
+            List<string>  res = SSS.Split('@').ToList();
+            res.RemoveAll(ss => ss.Equals(string.Empty));
+            for (int i = 0; i < res.Count; i++)
             {
                 Answer.Add(res[i]);
             }

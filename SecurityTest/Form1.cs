@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -34,12 +35,53 @@ namespace SecurityTest
         private bool LoadData()
         {
             bool res = false;
+            string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data");
+            string[] sss = System.IO.Directory.GetFiles(path,"*.xml");
+            if (sss.Length > 0)
+            {
+                for (int i = 0; i < sss.Length; i++)
+                {
+                    comboBox1.Items.Add(System.IO.Path.GetFileNameWithoutExtension(sss[i]).Replace(".xml",""));
+                }
+                
+                res = true;
+                comboBox1.SelectedIndex = 0;
+            }
+            else
+            {
+                MessageBox.Show("Не найдено файлов с тестами.", "Программа будет закрыта", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+
+           
 
             return res;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data", comboBox1.SelectedItem.ToString() + ".xml") ;
+            int maxQCount = 10;
+            try
+            {
+                using (StreamReader readtext = new StreamReader(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data", "SecurityTest.conf")))
+                {
+                    string sText = "";
+                    do
+                    {
+                        sText = readtext.ReadLine();
+                        if (sText.IndexOf(comboBox1.SelectedItem.ToString()) > 0)
+                        {
+                            maxQCount = int.Parse(sText.Replace("[" + comboBox1.SelectedItem.ToString() + "]", ""));
+                            break;
+                        }
+                    } while (sText != null);
+                }
+            }
+            catch (Exception exc)
+            { 
+            
+            }
+            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, 4, dateTimePicker1.Value.ToString());
             //if (ofd.ShowDialog() == DialogResult.OK)
             //{
             //    string tablename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
@@ -59,5 +101,13 @@ namespace SecurityTest
 
             //}
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (!LoadData())
+                Close();
+        }
+
+     
     }
 }

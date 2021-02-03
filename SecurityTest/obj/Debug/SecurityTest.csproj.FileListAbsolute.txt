@@ -1,0 +1,11 @@
+D:\2021\Test\SecTest.git\trunk\SecurityTest\bin\Debug\SecurityTest.exe
+D:\2021\Test\SecTest.git\trunk\SecurityTest\bin\Debug\SecurityTest.pdb
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.csprojAssemblyReference.cache
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.Form1.resources
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.FrmTest.resources
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.Properties.Resources.resources
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.csproj.GenerateResource.cache
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.csproj.CoreCompileInputs.cache
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.exe
+D:\2021\Test\SecTest.git\trunk\SecurityTest\obj\Debug\SecurityTest.pdb
+D:\2021\Test\SecTest.git\trunk\SecurityTest\bin\Debug\SecurityTest.exe.config
