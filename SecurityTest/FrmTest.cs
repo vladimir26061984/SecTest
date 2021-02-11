@@ -23,6 +23,8 @@ namespace SecurityTest
         public FrmTest()
         {
             InitializeComponent();
+
+            
         }
 
         public void ShowQ()
@@ -39,7 +41,29 @@ namespace SecurityTest
                 newRB.AutoSize = true;
                 newRB.Text = SSS;
                 panAnswer.Controls.Add(newRB);
+                newRB.CheckedChanged += NewRB_CheckedChanged;
+                newRB.MouseEnter += NewRB_MouseEnter;
+                newRB.MouseLeave += NewRB_MouseLeave;
             }
+        }
+
+        private void NewRB_MouseLeave(object sender, EventArgs e)
+        {
+            RadioButton RB = (sender as RadioButton);
+            RB.BackColor = Color.BurlyWood;
+            
+        }
+
+        private void NewRB_MouseEnter(object sender, EventArgs e)
+        {
+            RadioButton RB = (sender as RadioButton);
+            RB.BackColor = Color.Gold;
+        }
+
+        private void NewRB_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as RadioButton).Enabled)
+                buttonNext.Enabled = true;
         }
 
         public static void Call(string testFileName, string tableName, string FIO, int maxCount, string dt)
@@ -51,6 +75,7 @@ namespace SecurityTest
                 Inst.labelCurEmp.Text = "Сдает тест: " + FIO;
                 Inst.curDT = dt;
                 Inst.maxCountValue = maxCount;
+                
                 Inst.TTT = new DataTable(tableName);
                 Inst.TTT.ReadXmlSchema(testFileName);
                 Inst.TTT.ReadXml(testFileName);
@@ -64,6 +89,7 @@ namespace SecurityTest
                     Inst.ListQ.Add(NewQ);
                 }
                 if (Inst.maxCountValue > Inst.TTT.Rows.Count) Inst.maxCountValue = Inst.TTT.Rows.Count;
+                Inst.Text = "Выполнение теста. Осталось вопросов: " + Inst.maxCountValue;
                 for (i = 0; i < Inst.maxCountValue; i++)
                 {
                     do
@@ -84,27 +110,45 @@ namespace SecurityTest
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
+            int i = 1;
+            Question curQ = ListQ[listIndexes[indexCurentQ - 1]];
+            //curQ.isOk = panAnswer.Controls
+            foreach (RadioButton RB in panAnswer.Controls)
+            {
+                if (RB.Checked)
+                {
+                    curQ.UserAnswer = i;
+                    if (curQ.isOk)
+                        countOk++;
+                    break;
+                }
+                i++;
+            }
+
             if (indexCurentQ == maxCountValue)
             {
-                string filename = TTT.TableName + " " + labelCurEmp.Text.Replace("Сдает тест: ","") + " " + curDT.Replace(".","-").Replace(":","-");
+                string filename = TTT.TableName + " " + labelCurEmp.Text.Replace("Сдает тест: ", "") + " " + curDT.Replace(".", "-").Replace(":", "-");
                 string pathRes = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", filename + ".txt");
                 MessageBox.Show("Конец теста! Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");
                 using (StreamWriter writetext = new StreamWriter(pathRes))
                 {
                     writetext.WriteLine("       Дата теста " + curDT);
                     writetext.WriteLine("Тест сдавал: " + labelCurEmp.Text.Replace("Сдает тест: ", ""));
-                    for (int i = 0; i < listIndexes.Count; i++)
+                    for (i = 0; i < listIndexes.Count; i++)
                     {
-                        Question curQ = ListQ[listIndexes[i]];
-                        writetext.WriteLine((i + 1).ToString() + ". " + curQ.Text) ;
+                        curQ = ListQ[listIndexes[i]];
+                        writetext.WriteLine((i + 1).ToString() + ". " + curQ.Text);
                         foreach (string SSS in curQ.Answer)
                         {
                             writetext.WriteLine("    " + SSS.Trim());
                         }
+                        writetext.WriteLine("Ответ: " + curQ.UserAnswer);
+                        writetext.WriteLine("Верный ответ: " + curQ.ValidAnswer);
+
                         if (curQ.isOk)
-                            writetext.WriteLine("ответил верно: " + curQ.Answer[curQ.ValidAnswer - 1]);
+                            writetext.WriteLine("Результат: Верно");
                         else
-                            writetext.WriteLine("ответил неверно: " + curQ.Answer[curQ.ValidAnswer - 1]);
+                            writetext.WriteLine("Результат: Неверно");
                     }
                     writetext.WriteLine("Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");
                 }
@@ -112,24 +156,13 @@ namespace SecurityTest
             }
             else
             {
-                int i = 1;
-                Question curQ = ListQ[listIndexes[indexCurentQ - 1]];
-                //curQ.isOk = panAnswer.Controls
-                foreach (RadioButton RB in panAnswer.Controls)
-                {
-                    if (RB.Checked && i == curQ.ValidAnswer)
-                    {
-                        curQ.isOk = true;
-                        countOk++;
-                        buttonNext.BackColor = Color.Gold;
-                        break;
-                    }
-                    i++;
-                }
-                
                 indexCurentQ++;
                 ShowQ();
             }
+
+            Text = "Выполнение теста. Осталось вопросов: " + (maxCountValue - (indexCurentQ - 1));
+            buttonNext.Enabled = false;
+
         }
     }
 }

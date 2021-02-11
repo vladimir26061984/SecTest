@@ -110,6 +110,7 @@
             // 
             this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.buttonNext.Enabled = false;
             this.buttonNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonNext.Location = new System.Drawing.Point(780, 10);
             this.buttonNext.Name = "buttonNext";
@@ -162,7 +163,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "FrmTest";
-            this.Text = "FrmTest";
+            this.Text = "Выполнение теста. Осталось вопросов: ";
             this.Shown += new System.EventHandler(this.FrmTest_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

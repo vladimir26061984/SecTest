@@ -81,7 +81,7 @@ namespace SecurityTest
             { 
             
             }
-            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, 4, dateTimePicker1.Value.ToString());
+            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, maxQCount, dateTimePicker1.Value.ToString());
             //if (ofd.ShowDialog() == DialogResult.OK)
             //{
             //    string tablename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
@@ -108,6 +108,9 @@ namespace SecurityTest
                 Close();
         }
 
-     
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -28,10 +28,18 @@ namespace SecurityTest
         /// Вариант правильного ответа
         /// </summary>
         public int ValidAnswer;
+
+        /// <summary>
+        /// Ответ
+        /// </summary>
+        public int UserAnswer;
         /// <summary>
         /// признак того, что на вопрос был получен правильный ответ
         /// </summary>
-        public bool isOk;
+        public bool isOk
+        {
+            get { return UserAnswer == ValidAnswer; }
+        }
 
         public Question()
         {

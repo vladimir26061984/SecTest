@@ -177,6 +177,7 @@
             this.label7.Size = new System.Drawing.Size(294, 70);
             this.label7.TabIndex = 6;
             this.label7.Text = resources.GetString("label7.Text");
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // pictureBox2
             // 
