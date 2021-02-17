@@ -73,9 +73,9 @@ namespace SecurityTest.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap chernomortransneft {
+        internal static System.Drawing.Bitmap _mg_2025 {
             get {
-                object obj = ResourceManager.GetObject("chernomortransneft", resourceCulture);
+                object obj = ResourceManager.GetObject("_mg_2025", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,39 +93,9 @@ namespace SecurityTest.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tile {
+        internal static System.Drawing.Bitmap minTank {
             get {
-                object obj = ResourceManager.GetObject("tile", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap title {
-            get {
-                object obj = ResourceManager.GetObject("title", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap vostok {
-            get {
-                object obj = ResourceManager.GetObject("vostok", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap vostok1 {
-            get {
-                object obj = ResourceManager.GetObject("vostok1", resourceCulture);
+                object obj = ResourceManager.GetObject("minTank", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

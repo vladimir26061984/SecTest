@@ -19,6 +19,9 @@ namespace SecurityTest
         protected List<int> listIndexes = new List<int>();
         protected int countOk = 0;
         protected string curDT;
+        protected bool superUser = false;
+        protected string PodName;
+        protected string DolName;
 
         public FrmTest()
         {
@@ -50,7 +53,7 @@ namespace SecurityTest
         private void NewRB_MouseLeave(object sender, EventArgs e)
         {
             RadioButton RB = (sender as RadioButton);
-            RB.BackColor = Color.BurlyWood;
+            RB.BackColor = Color.Transparent;
             
         }
 
@@ -66,7 +69,7 @@ namespace SecurityTest
                 buttonNext.Enabled = true;
         }
 
-        public static void Call(string testFileName, string tableName, string FIO, int maxCount, string dt)
+        public static void Call(string testFileName, string tableName, string FIO, string pod, string dol, int maxCount, string dt, bool supUser)
         {
             int i = 1, x;
             Random Rand = new Random();
@@ -75,7 +78,10 @@ namespace SecurityTest
                 Inst.labelCurEmp.Text = "Сдает тест: " + FIO;
                 Inst.curDT = dt;
                 Inst.maxCountValue = maxCount;
-                
+                Inst.superUser = supUser;
+                Inst.PodName = pod;
+                Inst.DolName = dol;
+
                 Inst.TTT = new DataTable(tableName);
                 Inst.TTT.ReadXmlSchema(testFileName);
                 Inst.TTT.ReadXml(testFileName);
@@ -110,48 +116,78 @@ namespace SecurityTest
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
+            //List<string> userParam = new List<string>();
+            //List<Question> list = new List<Question>();
+            //string filename = TTT.TableName + " " + labelCurEmp.Text.Replace("Сдает тест: ", "") + " " + curDT.Replace(".", "-").Replace(":", "-");
+            //string pathRes = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", filename + ".pdf");
+            //reportGenerator oB = new reportGenerator(pathRes, userParam, list, "");
+            //Close();
+
             int i = 1;
             Question curQ = ListQ[listIndexes[indexCurentQ - 1]];
             //curQ.isOk = panAnswer.Controls
-            foreach (RadioButton RB in panAnswer.Controls)
+
+            if (superUser)
             {
-                if (RB.Checked)
-                {
-                    curQ.UserAnswer = i;
-                    if (curQ.isOk)
-                        countOk++;
-                    break;
-                }
-                i++;
+                countOk++;
             }
+            else
+                foreach (RadioButton RB in panAnswer.Controls)
+                {
+                    if (RB.Checked)
+                    {
+                        curQ.UserAnswer = i;
+                        if (curQ.isOk)
+                            countOk++;
+                        break;
+                    }
+                    i++;
+                }
 
             if (indexCurentQ == maxCountValue)
             {
                 string filename = TTT.TableName + " " + labelCurEmp.Text.Replace("Сдает тест: ", "") + " " + curDT.Replace(".", "-").Replace(":", "-");
-                string pathRes = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", filename + ".txt");
-                MessageBox.Show("Конец теста! Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");
-                using (StreamWriter writetext = new StreamWriter(pathRes))
+                string pathRes = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", filename + ".pdf");
+                List<string> userParam = new List<string>();
+                List<Question> list = new List<Question>();
+                MessageBox.Show("Тестирование завершено. Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");
+                for (i = 0; i < listIndexes.Count; i++)
                 {
-                    writetext.WriteLine("       Дата теста " + curDT);
-                    writetext.WriteLine("Тест сдавал: " + labelCurEmp.Text.Replace("Сдает тест: ", ""));
-                    for (i = 0; i < listIndexes.Count; i++)
-                    {
-                        curQ = ListQ[listIndexes[i]];
-                        writetext.WriteLine((i + 1).ToString() + ". " + curQ.Text);
-                        foreach (string SSS in curQ.Answer)
-                        {
-                            writetext.WriteLine("    " + SSS.Trim());
-                        }
-                        writetext.WriteLine("Ответ: " + curQ.UserAnswer);
-                        writetext.WriteLine("Верный ответ: " + curQ.ValidAnswer);
-
-                        if (curQ.isOk)
-                            writetext.WriteLine("Результат: Верно");
-                        else
-                            writetext.WriteLine("Результат: Неверно");
-                    }
-                    writetext.WriteLine("Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");
+                    curQ = ListQ[listIndexes[i]];
+                    list.Add(curQ);
                 }
+                userParam.Add(labelCurEmp.Text.Replace("Сдает тест: ", ""));
+                userParam.Add(curDT);
+                userParam.Add(DolName);
+                userParam.Add(PodName);
+                userParam.Add(TTT.TableName);
+                //using (StreamWriter writetext = new StreamWriter(pathRes))
+                //{
+                //    writetext.WriteLine("       Дата теста " + curDT);
+                //    writetext.WriteLine("Тест сдавал: " + labelCurEmp.Text.Replace("Сдает тест: ", ""));
+                //    for (i = 0; i < listIndexes.Count; i++)
+                //    {
+                //        curQ = ListQ[listIndexes[i]];
+                //        writetext.WriteLine((i + 1).ToString() + ". " + curQ.Text);
+                //        foreach (string SSS in curQ.Answer)
+                //        {
+                //            writetext.WriteLine("    " + SSS.Trim());
+                //        }
+                //        writetext.WriteLine("Ответ: " + curQ.UserAnswer);
+                //        writetext.WriteLine("Верный ответ: " + curQ.ValidAnswer);
+
+                //        if (curQ.isOk)
+                //            writetext.WriteLine("Результат: Верно");
+                //        else
+                //            writetext.WriteLine("Результат: Неверно");
+                //    }
+                //    writetext.WriteLine("Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");
+                //}
+
+
+
+                reportGenerator oB = new reportGenerator(pathRes, userParam, list, "");
+                
                 DialogResult = DialogResult.OK;
             }
             else
@@ -163,6 +199,19 @@ namespace SecurityTest
             Text = "Выполнение теста. Осталось вопросов: " + (maxCountValue - (indexCurentQ - 1));
             buttonNext.Enabled = false;
 
+        }
+
+        private void FrmTest_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (indexCurentQ < maxCountValue)
+            {
+                if (MessageBox.Show("Тестирование не завершено. Вы подтверждаете завершение тестирования?", "Подтвердите операцию", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    e.Cancel = false;
+                }
+                else
+                    e.Cancel = true;
+            }
         }
     }
 }

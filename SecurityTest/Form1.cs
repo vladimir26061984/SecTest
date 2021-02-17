@@ -12,6 +12,8 @@ namespace SecurityTest
 {
     public partial class Form1 : Form
     {
+        bool SuperUser = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -29,7 +31,11 @@ namespace SecurityTest
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            button1.Enabled = (textBox1.Text.Length > 0) && (textBox2.Text.Length > 0) && (textBox3.Text.Length > 0);
+            button1.Enabled = (textBox1.Text.Length > 0) && (textBox2.Text.Length > 0) && (textBox3.Text.Length > 0) && (textBox4.Text.Length > 0) && (textBox5.Text.Length > 0);
+            if (button1.Enabled && SuperUser)
+                button1.BackColor = Color.FromArgb(150, Color.Gold);
+            else if (button1.Enabled && !SuperUser)
+                button1.BackColor = Color.Transparent;
         }
 
         private bool LoadData()
@@ -81,25 +87,8 @@ namespace SecurityTest
             { 
             
             }
-            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, maxQCount, dateTimePicker1.Value.ToString());
-            //if (ofd.ShowDialog() == DialogResult.OK)
-            //{
-            //    string tablename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-            //    ttt = new DataTable(tablename);
-            //    ttt.ReadXmlSchema(ofd.FileName);
-            //    ttt.ReadXml(ofd.FileName);
-            //    LIST.Clear();
-            //    foreach (DataRow RRR in ttt.Rows)
-            //    {
-            //        NextOb();
-            //        Curent.Num = int.Parse(RRR["Num"].ToString());
-            //        Curent.Text = RRR["Text"].ToString();
-            //        Curent.setAnswer(RRR["Answer"].ToString());
-            //        Curent.ValidAnswer = int.Parse(RRR["Valid"].ToString());
-            //        LIST.Add(Curent);
-            //    }
-
-            //}
+            
+            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, textBox4.Text, textBox5.Text, maxQCount, dateTimePicker1.Value.ToString(), SuperUser);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -111,6 +100,21 @@ namespace SecurityTest
         private void label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label9_MouseDown(object sender, MouseEventArgs e)
+        {
+            Graphics grx = label9.CreateGraphics();
+            SizeF SSS1 = grx.MeasureString(label9.Text.Substring(0, 1),label9.Font);
+            SizeF SSS2 = grx.MeasureString(label9.Text.Substring(1, 2), label9.Font);
+            if (e.Location.X > SSS1.Width && e.Location.X < SSS2.Height)
+            {
+                SuperUser = !SuperUser;
+                if (button1.Enabled && SuperUser)
+                    button1.BackColor = Color.FromArgb(150, Color.Gold);
+                else if (button1.Enabled && !SuperUser)
+                    button1.BackColor = Color.Transparent;
+            }
         }
     }
 }

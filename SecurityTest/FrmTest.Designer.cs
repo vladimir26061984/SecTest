@@ -44,7 +44,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.Bisque;
+            this.panel1.BackColor = System.Drawing.Color.SeaShell;
             this.panel1.Controls.Add(this.labelCurEmp);
             this.panel1.Controls.Add(this.labelQNum);
             this.panel1.Controls.Add(this.label1);
@@ -85,7 +85,7 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.Bisque;
+            this.panel2.BackColor = System.Drawing.Color.SeaShell;
             this.panel2.Controls.Add(this.buttonPrev);
             this.panel2.Controls.Add(this.buttonNext);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -122,6 +122,7 @@
             // 
             // labQ
             // 
+            this.labQ.BackColor = System.Drawing.Color.Transparent;
             this.labQ.Dock = System.Windows.Forms.DockStyle.Top;
             this.labQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labQ.Location = new System.Drawing.Point(0, 46);
@@ -134,7 +135,7 @@
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.Bisque;
+            this.panel3.BackColor = System.Drawing.Color.SeaShell;
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 203);
             this.panel3.Name = "panel3";
@@ -143,7 +144,7 @@
             // 
             // panAnswer
             // 
-            this.panAnswer.BackColor = System.Drawing.Color.BurlyWood;
+            this.panAnswer.BackColor = System.Drawing.Color.Transparent;
             this.panAnswer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panAnswer.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.panAnswer.Location = new System.Drawing.Point(0, 213);
@@ -155,15 +156,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::SecurityTest.Properties.Resources.minTank;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(976, 714);
-            this.ControlBox = false;
             this.Controls.Add(this.panAnswer);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.labQ);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmTest";
             this.Text = "Выполнение теста. Осталось вопросов: ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmTest_FormClosing);
             this.Shown += new System.EventHandler(this.FrmTest_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
