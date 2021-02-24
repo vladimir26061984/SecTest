@@ -23,11 +23,14 @@ namespace SecurityTest
         protected string PodName;
         protected string DolName;
 
+        DateTime startTime;
+
         public FrmTest()
         {
             InitializeComponent();
+            startTime = DateTime.Now;
 
-            
+
         }
 
         public void ShowQ()
@@ -146,7 +149,9 @@ namespace SecurityTest
 
             if (indexCurentQ == maxCountValue)
             {
-                string filename = TTT.TableName + " " + labelCurEmp.Text.Replace("Сдает тест: ", "") + " " + curDT.Replace(".", "-").Replace(":", "-");
+                string FIO = labelCurEmp.Text.Replace("Сдает тест: ", "");
+                string[] FIO_Arr = FIO.Split("".ToArray(), StringSplitOptions.RemoveEmptyEntries);
+                string filename = TTT.TableName + " " + FIO_Arr[0] + " " + FIO_Arr[1][0] + FIO_Arr[2][0] + " " + curDT.Replace(".", "-").Replace(":", "-");
                 string pathRes = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", filename + ".pdf");
                 List<string> userParam = new List<string>();
                 List<Question> list = new List<Question>();
@@ -161,6 +166,10 @@ namespace SecurityTest
                 userParam.Add(DolName);
                 userParam.Add(PodName);
                 userParam.Add(TTT.TableName);
+                TimeSpan tsp = DateTime.Now - startTime;
+                userParam.Add(tsp.Minutes.ToString()+":"+tsp.Seconds.ToString());
+                userParam.Add(countOk.ToString());
+                userParam.Add((maxCountValue - countOk).ToString());
                 //using (StreamWriter writetext = new StreamWriter(pathRes))
                 //{
                 //    writetext.WriteLine("       Дата теста " + curDT);

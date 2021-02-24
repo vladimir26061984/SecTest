@@ -12,11 +12,29 @@ namespace SecurityTest
 {
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// признак суперрежима
+        /// </summary>
         bool SuperUser = false;
+        object datetime;
+
+        public static List<int> CriteriaList;
 
         public Form1()
         {
+            CriteriaList = new List<int>();
             InitializeComponent();
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "dd.MM.yyyy";
+            
+
+            //textBox1.Text = "Бублий";
+            //textBox2.Text = "Тимур";
+            //textBox3.Text = "Заурович";
+            //textBox4.Text = "Отряд \"Грушовая\"";
+            //textBox5.Text = "Специалист";
+
+            //UpdateStart();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -29,13 +47,18 @@ namespace SecurityTest
             Close();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        void UpdateStart()
         {
             button1.Enabled = (textBox1.Text.Length > 0) && (textBox2.Text.Length > 0) && (textBox3.Text.Length > 0) && (textBox4.Text.Length > 0) && (textBox5.Text.Length > 0);
             if (button1.Enabled && SuperUser)
                 button1.BackColor = Color.FromArgb(150, Color.Gold);
             else if (button1.Enabled && !SuperUser)
                 button1.BackColor = Color.Transparent;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            UpdateStart();
         }
 
         private bool LoadData()
@@ -67,6 +90,10 @@ namespace SecurityTest
         {
             string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data", comboBox1.SelectedItem.ToString() + ".xml") ;
             int maxQCount = 10;
+            CriteriaList.Clear();
+            int OkValue = maxQCount;
+            string strParse = "";
+            string Error = "";
             try
             {
                 using (StreamReader readtext = new StreamReader(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data", "SecurityTest.conf")))
@@ -77,7 +104,22 @@ namespace SecurityTest
                         sText = readtext.ReadLine();
                         if (sText.IndexOf(comboBox1.SelectedItem.ToString()) > 0)
                         {
-                            maxQCount = int.Parse(sText.Replace("[" + comboBox1.SelectedItem.ToString() + "]", ""));
+                            strParse = sText.Replace("[" + comboBox1.SelectedItem.ToString() + "]", "");
+                            string[] strParseArr = strParse.Split(";".ToArray());
+                            if (int.TryParse(strParseArr[0], out maxQCount))
+                                OkValue = maxQCount;
+                            else
+                                Error = "Ошибка при получениеи количества вопросов в тесте";
+                            if (int.TryParse(strParseArr[1], out OkValue))
+                                CriteriaList.Add(OkValue);
+                            else
+                            {
+                                if (Error.Length > 0)
+                                    Error += Environment.NewLine + "Ошибка при получении количества правильных ответов в тесте";
+                                else
+                                    Error = "Ошибка при получении количества правильных ответов в тесте";
+                                CriteriaList.Add(maxQCount);
+                            }
                             break;
                         }
                     } while (sText != null);
@@ -88,7 +130,16 @@ namespace SecurityTest
             
             }
             
-            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, textBox4.Text, textBox5.Text, maxQCount, dateTimePicker1.Value.ToString(), SuperUser);
+            
+            if (Error.Length > 0)
+                if (MessageBox.Show(Error + Environment.NewLine + "Если нажмете 'Да', то программа продолжиться со стандартными настройками", "Ошибка при чтении файла настройки для выбранной дисциплины", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                {
+                    return;
+                }
+
+            var strArr = dateTimePicker1.Value.Date.ToString().Split();
+            var strDT_test = strArr[0] + " " + DateTime.Now.ToLongTimeString();
+            FrmTest.Call(path, comboBox1.SelectedItem.ToString(), textBox1.Text + " " + textBox2.Text + " " + textBox3.Text, textBox4.Text, textBox5.Text, maxQCount, strDT_test, SuperUser);
         }
 
         private void Form1_Load(object sender, EventArgs e)

@@ -22,8 +22,8 @@ namespace SecurityTest
         private TextFrame resultFrame;
         private Table table;
         private Color TableBorder = Colors.Black;
-        private Color TableBlue = Colors.LightBlue;
-        private Color TableGray = Colors.LightGray;
+        private Color TableBlue = Colors.White; //Colors.LightBlue;
+        private Color TableGray = Colors.White; //Colors.LightGray;
 
         public reportGenerator(string pathName, List<string> userParam, List<Question> list, string Text)
         {
@@ -55,7 +55,7 @@ namespace SecurityTest
             pdfRenderer.RenderDocument();
             pdfRenderer.PdfDocument.Save(pathName);
             // ...and start a viewer.
-            //Process.Start(filename);
+            System.Diagnostics.Process.Start(pathName);
         }
 
         public static void Call(string pathName, List<string> userParam, List<Question> list, string Text)
@@ -240,7 +240,6 @@ namespace SecurityTest
             // Iterate the invoice items
             double totalExtendedPrice = 0;
             
-            for(int o = 0; o <5; o++)
             for (int i = 0; i < list.Count; i++)
             {
                 // Each item fills two rows
@@ -260,15 +259,23 @@ namespace SecurityTest
                 //row1.Cells[5].Shading.Color = TableGray;
                 //row1.Cells[5].MergeDown = 1;
 
-                row1.Cells[0].AddParagraph(list[i].Text);
+                string paragText = list[i].Text;
+                foreach (string SSS in list[i].Answer)
+                    paragText += Environment.NewLine + SSS;
+                row1.Cells[0].AddParagraph(paragText);
                 row1.Cells[1].AddParagraph(list[i].UserAnswer.ToString());
                 row1.Cells[2].AddParagraph(list[i].ValidAnswer.ToString());
                 if (list[i].isOk)
+                {
                     row1.Cells[3].AddParagraph("Верно");
+                    row1.Cells[3].Format.Font.Bold = false;
+                    row1.Cells[3].Format.Font.Color = Colors.DarkSlateGray;
+                }
                 else
                 {
                     row1.Cells[3].AddParagraph("Неверно");
                     row1.Cells[3].Format.Font.Bold = true;
+
                 }
 
                 this.table.SetEdge(0, this.table.Rows.Count - 1, 4, 1, Edge.Box, BorderStyle.Single, 0.75);
@@ -327,15 +334,33 @@ namespace SecurityTest
             paragraph.Format.Borders.Width = 0.75;
             paragraph.Format.Borders.Distance = 3;
             paragraph.Format.Borders.Color = TableBorder;
-            paragraph.AddText("Проверяемый: " + userParam[0]);
+            paragraph.AddText("Время на ответы:");
             paragraph.AddLineBreak();
-            paragraph.AddText("Подразделение: " + userParam[3]);
+            paragraph.AddText("установленное 15:00");
             paragraph.AddLineBreak();
-            paragraph.AddText("Должность: " + userParam[2]);
+            //paragraph.AddText("затраченное   " + userParam[5]);
+            paragraph.AddText("затраченное   ");
+            paragraph.AddText("   ");
+            paragraph.AddText(userParam[5]);
+            
             paragraph.AddLineBreak();
-            paragraph.AddText("Тема проверки знаний: " + userParam[4]);
             paragraph.AddLineBreak();
-            paragraph.AddText("Дата/время проведения: " + userParam[1]);
+            paragraph.AddText("Количество ответов:");
+            paragraph.AddLineBreak();
+            paragraph.AddText("правильных   " + userParam[6]);
+            paragraph.AddLineBreak();
+            paragraph.AddText("неправильных " + userParam[7]);
+            paragraph.AddLineBreak();
+            paragraph.AddLineBreak();
+            paragraph.AddLineBreak();
+
+            int crit = Form1.CriteriaList[0];
+            if (int.Parse(userParam[6]) >= crit)
+                paragraph.AddText("Результат проверки: сдал");
+            else
+                paragraph.AddText("Результат проверки: не сдал");
+            paragraph.AddLineBreak();
+            //paragraph.AddText("Дата/время проведения: " + userParam[1]);
             //paragraph.Format.Shading.Color = TableGray;
 
         }
