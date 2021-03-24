@@ -1,0 +1,75 @@
+﻿<Window x:Class="EmploySet.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EmploySet"
+        mc:Ignorable="d"
+        Title="Утилита учета данных для обеспечения автоматизации ввода программы-теста" Height="12.7cm" Width="800" ResizeMode="NoResize" Closing="Window_Closing">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Сотрудники" Background="LightSkyBlue">
+                <StackPanel Orientation="Vertical" Background="LightSkyBlue">
+                    <StackPanel Orientation="Horizontal" Margin="3,3,3,3" Background="Moccasin" Height="0.7cm">
+                        <TextBlock Margin="0,4,0,0">Фамилия:</TextBlock>
+                        <TextBox Width="150" Margin="5,2,5,2" x:Name="tbFam" TextChanged="tbFam_TextChanged" GotFocus="tbFam_GotFocus"></TextBox>
+                        <TextBlock Margin="0,4,0,0">Имя:</TextBlock>
+                        <TextBox Width="150" Margin="5,2,5,2" x:Name="tbName" TextChanged="tbFam_TextChanged" GotFocus="tbFam_GotFocus"></TextBox>
+                        <TextBlock Margin="0,4,0,0">Отчество:</TextBlock>
+                        <TextBox Width="150" Margin="5,2,15,2" x:Name="tbPatrName" TextChanged="tbFam_TextChanged" GotFocus="tbFam_GotFocus"></TextBox>
+                        <Button x:Name="butAdd" Width="3cm" Click="butAdd_Click" ToolTip="Добавить ФИО" IsEnabled="False">Добавить</Button>
+                        <Button x:Name="butDel" Margin="10,0,0,0" Width="0.5cm" ToolTip="Удалить выбранную запись" Click="butDel_Click" Background="LightCoral">X</Button>
+                    </StackPanel>
+                    <DataGrid x:Name="EmpGrid" IsReadOnly="True" Margin="3,3,3,3" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" Background="White" Height="9.8cm"
+    RowBackground="LightGray" AlternatingRowBackground="White" Loaded="EmpGrid_Loaded" VerticalScrollBarVisibility="Visible">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=Fam}" Width="150" />
+                            <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" Width="150" />
+                            <DataGridTextColumn Header="Отчество" Binding="{Binding Path=PatrName}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Подразделения" Background="LightCyan">
+                <StackPanel Orientation="Vertical" Background="LightCyan">
+                    <StackPanel Orientation="Horizontal" Margin="3,3,3,3" Background="Moccasin" Height="0.7cm">
+                        <TextBlock Margin="0,4,0,0">Наименование подразделения:</TextBlock>
+                        <TextBox Width="430" Margin="5,2,5,2" x:Name="tbPod" TextChanged="tbPod_TextChanged" GotFocus="tbFam_GotFocus"></TextBox>
+                        
+                        <Button x:Name="butAddPod" Width="3cm" Click="butAdd_Click" ToolTip="Добавить подразделение" IsEnabled="False">Добавить</Button>
+                        <Button x:Name="butDelPod" Margin="10,0,0,0" Width="0.5cm" ToolTip="Удалить выбранную запись" Click="butDel_Click" Background="LightCoral">X</Button>
+                    </StackPanel>
+                    <DataGrid x:Name="PodGrid" IsReadOnly="True" Margin="3,3,3,3" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" Background="White" Height="9.8cm"
+    RowBackground="LightGray" AlternatingRowBackground="White" Loaded="PodGrid_Loaded" VerticalScrollBarVisibility="Visible" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Наименование подразделения" Binding="{Binding Path=Name}" Width="*" >
+                                
+                            </DataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Должности" Background="LightGray">
+                <StackPanel Orientation="Vertical" Background="LightGray">
+                    <StackPanel Orientation="Horizontal" Margin="3,3,3,3" Background="Moccasin" Height="0.7cm">
+                        <TextBlock Margin="0,4,0,0">Наименование должности:</TextBlock>
+                        <TextBox Width="450" Margin="5,2,5,2" x:Name="tbDol" TextChanged="tbDol_TextChanged"  GotFocus="tbFam_GotFocus"></TextBox>
+
+                        <Button x:Name="butAddDol" Width="3cm" Click="butAdd_Click" ToolTip="Добавить должность" IsEnabled="False">Добавить</Button>
+                        <Button x:Name="butDelDol" Margin="10,0,0,0" Width="0.5cm" ToolTip="Удалить выбранную запись" Click="butDel_Click" Background="LightCoral">X</Button>
+                    </StackPanel>
+                    <DataGrid x:Name="DolGrid" IsReadOnly="True" Margin="3,3,3,3" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" Background="White" Height="9.8cm"
+    RowBackground="LightGray" AlternatingRowBackground="White" Loaded="DolGrid_Loaded" VerticalScrollBarVisibility="Visible" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Наименование должности" Binding="{Binding Path=Name}" Width="*" >
+
+                            </DataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
