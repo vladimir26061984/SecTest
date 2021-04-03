@@ -47,8 +47,8 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +61,7 @@
             this.button1.Location = new System.Drawing.Point(306, 224);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(115, 31);
-            this.button1.TabIndex = 5;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Начать тест";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -73,7 +73,7 @@
             this.button2.Location = new System.Drawing.Point(306, 261);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(115, 31);
-            this.button2.TabIndex = 8;
+            this.button2.TabIndex = 9;
             this.button2.Text = "Выход";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -84,7 +84,7 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(277, 100);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(142, 20);
-            this.dateTimePicker1.TabIndex = 6;
+            this.dateTimePicker1.TabIndex = 8;
             // 
             // label3
             // 
@@ -112,9 +112,9 @@
             this.textBox2.Location = new System.Drawing.Point(100, 153);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(167, 20);
-            this.textBox2.TabIndex = 1;
+            this.textBox2.TabIndex = 2;
             this.textBox2.Text = "\r\n";
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox2.WordWrap = false;
             // 
             // label5
             // 
@@ -132,9 +132,9 @@
             this.textBox3.Location = new System.Drawing.Point(100, 179);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(167, 20);
-            this.textBox3.TabIndex = 2;
+            this.textBox3.TabIndex = 3;
             this.textBox3.Text = "\r\n";
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox3.WordWrap = false;
             // 
             // label6
             // 
@@ -151,10 +151,9 @@
             this.textBox4.Location = new System.Drawing.Point(100, 207);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(167, 20);
-            this.textBox4.TabIndex = 3;
+            this.textBox4.TabIndex = 4;
             this.textBox4.Text = "\r\n";
             this.textBox4.WordWrap = false;
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // comboBox1
             // 
@@ -213,10 +212,9 @@
             this.textBox5.Location = new System.Drawing.Point(100, 235);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(167, 20);
-            this.textBox5.TabIndex = 4;
+            this.textBox5.TabIndex = 5;
             this.textBox5.Text = "\r\n";
             this.textBox5.WordWrap = false;
-            this.textBox5.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // pictureBox2
             // 
@@ -237,6 +235,16 @@
             this.panel1.Size = new System.Drawing.Size(317, 20);
             this.panel1.TabIndex = 13;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label2.Location = new System.Drawing.Point(3, 2);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "label2";
+            // 
             // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -245,17 +253,8 @@
             this.textBox1.Size = new System.Drawing.Size(317, 20);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "\r\n";
+            this.textBox1.WordWrap = false;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label2.Location = new System.Drawing.Point(3, 2);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "label2";
             // 
             // Form1
             // 
@@ -288,8 +287,9 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Ввод учетных данных";
+            this.Text = "Окно входа";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

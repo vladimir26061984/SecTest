@@ -30,14 +30,21 @@ namespace SecurityTest
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.CustomFormat = "dd.MM.yyyy";
             label2.Text = "";
+            
+            this.textBox1.TextChanged += new System.EventHandler(this.UpdateStart);
+            this.textBox2.TextChanged += new System.EventHandler(this.UpdateStart);
+            this.textBox3.TextChanged += new System.EventHandler(this.UpdateStart);
+            this.textBox4.TextChanged += new System.EventHandler(this.UpdateStart);
+            this.textBox5.TextChanged += new System.EventHandler(this.UpdateStart);
 
-            //textBox1.Text = "Бублий";
-            //textBox2.Text = "Тимур";
-            //textBox3.Text = "Заурович";
-            //textBox4.Text = "Отряд \"Грушовая\"";
-            //textBox5.Text = "Специалист";
+            textBox1.Text = "Ивановичкусис";
+            textBox2.Text = "Капец длинное  имя";
+            textBox3.Text = "Длинное отчетство тоже";
+            textBox4.Text = "Название подраделения";
+            textBox5.Text = "Название должности";
 
             //UpdateStart();
+            textBox1.Focus();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -59,10 +66,16 @@ namespace SecurityTest
                 button1.BackColor = Color.Transparent;
         }
 
+        private void UpdateStart(object sender, EventArgs e)
+        {
+            UpdateStart();
+        }
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             Graphics GRX = textBox1.CreateGraphics();
-            UpdateStart();
+            //UpdateStart();
             List<char> ppppp = new List<char>();
             ppppp.Add('\r');
             ppppp.Add('\n');
@@ -93,8 +106,8 @@ namespace SecurityTest
                 textBox1.Text = sss;
                 //textBox1.Select(sss.Length, textBox1.Text.Length - sss.Length);
                 label2.Text = "";
-                textBox2.Text = "";
-                textBox3.Text = "";
+                //textBox2.Text = "";
+                //textBox3.Text = "";
             }
             GRX.Dispose();
         }
@@ -139,6 +152,10 @@ namespace SecurityTest
                     EmployList.Add(NewEmp);
                 }
                 res = true;
+            }
+            else
+            {
+                textBox1.TextChanged -= textBox1_TextChanged;
             }
             return res;
         }
@@ -224,6 +241,13 @@ namespace SecurityTest
                 else if (button1.Enabled && !SuperUser)
                     button1.BackColor = Color.Transparent;
             }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            bool l1 = textBox1.Focused;
+            bool l2 = textBox2.Focused;
+            textBox1.Focus();
         }
     }
 }

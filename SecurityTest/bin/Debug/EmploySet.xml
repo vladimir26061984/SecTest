@@ -1,0 +1,50 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Employ" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Employ">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Fam" type="xs:string" minOccurs="0" />
+                <xs:element name="Name" type="xs:string" minOccurs="0" />
+                <xs:element name="PatrName" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Employ>
+    <Fam>Иванов</Fam>
+    <Name>Иван</Name>
+    <PatrName>Иванович</PatrName>
+  </Employ>
+  <Employ>
+    <Fam>Ивлев</Fam>
+    <Name>Ивлев</Name>
+    <PatrName>Иванович</PatrName>
+  </Employ>
+  <Employ>
+    <Fam>Иваненко</Fam>
+    <Name>Иваненко</Name>
+    <PatrName>Иванович</PatrName>
+  </Employ>
+  <Employ>
+    <Fam>Иванюк</Fam>
+    <Name>Иванюк</Name>
+    <PatrName>Иванович</PatrName>
+  </Employ>
+  <Employ>
+    <Fam>Иванович</Fam>
+    <Name>Иванович</Name>
+    <PatrName>Иванович</PatrName>
+  </Employ>
+  <Employ>
+    <Fam>Ивановичкус</Fam>
+    <Name>Ивановичкус</Name>
+    <PatrName>Иванович</PatrName>
+  </Employ>
+</NewDataSet>

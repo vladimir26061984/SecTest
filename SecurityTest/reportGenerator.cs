@@ -227,11 +227,11 @@ namespace SecurityTest
             // Fill address in address text frame
 
             Paragraph paragraph = this.addressFrame.AddParagraph();
-            paragraph.AddText("Проверяемый: " + userParam[0]);
+            paragraph.AddText("Проверяемый: " + userParam[0].Replace(Environment.NewLine, ""));
             paragraph.AddLineBreak();
-            paragraph.AddText("Подразделение: " + userParam[3]);
+            paragraph.AddText("Подразделение: " + userParam[3].Replace(Environment.NewLine, ""));
             paragraph.AddLineBreak();
-            paragraph.AddText("Должность: " + userParam[2]);
+            paragraph.AddText("Должность: " + userParam[2].Replace(Environment.NewLine, ""));
             paragraph.AddLineBreak();
             paragraph.AddText("Тема проверки знаний: " + userParam[4]);
             paragraph.AddLineBreak();
