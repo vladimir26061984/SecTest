@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Answers.cs" />
+    <Compile Include="Employ.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

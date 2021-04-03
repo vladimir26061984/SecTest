@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,9 @@ namespace SecurityTest
         /// </summary>
         bool SuperUser = false;
         object datetime;
-
+        DataTable T_Emp;
+        List<Employ> EmployList = new List<Employ>();
+        bool AutoSet_Emp = false;
         public static List<int> CriteriaList;
 
         public Form1()
@@ -26,7 +29,7 @@ namespace SecurityTest
             InitializeComponent();
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.CustomFormat = "dd.MM.yyyy";
-            
+            label2.Text = "";
 
             //textBox1.Text = "Бублий";
             //textBox2.Text = "Тимур";
@@ -58,7 +61,42 @@ namespace SecurityTest
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            Graphics GRX = textBox1.CreateGraphics();
             UpdateStart();
+            List<char> ppppp = new List<char>();
+            ppppp.Add('\r');
+            ppppp.Add('\n');
+            string sss = textBox1.Text.Trim(ppppp.ToArray());
+            Debug.WriteLine(sss);
+            var lst = EmployList.Where(r => r.Fam.IndexOf(sss, 0) != -1);
+            if (textBox1.Text.Length != 0 && lst != null && lst.Count() > 0)
+            {
+                textBox1.Text = sss;// lst.First().Fam;// + " " + lst.First().Name + " " + lst.First().PatrName;
+                int iii = lst.First().Fam.IndexOf(sss) + sss.Length;
+                label2.Text = lst.First().Fam.Substring(iii, lst.First().Fam.Length - iii);
+                label2.Location = new Point((int)GRX.MeasureString(sss,textBox1.Font).Width-2, label2.Location.Y);
+                //textBox1.Select(sss.Length, textBox1.Text.Length - sss.Length);
+                //textBox1.Select(sss.Length, textBox1.Text.Length - sss.Length);
+                textBox2.Text = lst.First().Name;
+                textBox3.Text = lst.First().PatrName;
+            }
+            else if (textBox1.Text.Length == 0)
+            {
+                textBox1.Text = "";
+                //textBox1.Select(sss.Length, textBox1.Text.Length - sss.Length);
+                label2.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+            }
+            else if (textBox1.Text.Length != 0)
+            {
+                textBox1.Text = sss;
+                //textBox1.Select(sss.Length, textBox1.Text.Length - sss.Length);
+                label2.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+            }
+            GRX.Dispose();
         }
 
         private bool LoadData()
@@ -83,6 +121,25 @@ namespace SecurityTest
 
            
 
+            return res;
+        }
+
+        private bool LoadEmpData()
+        {
+            bool res = false;
+            string emp_path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "EmploySet.xml");
+            if (File.Exists(emp_path))
+            {
+                T_Emp = new DataTable("Employ");
+                T_Emp.ReadXml(emp_path);
+                T_Emp.ReadXmlSchema(emp_path);
+                foreach (DataRow RRR in T_Emp.Rows)
+                {
+                    Employ NewEmp = new Employ(RRR["Fam"].ToString(), RRR["Name"].ToString(), RRR["PatrName"].ToString());
+                    EmployList.Add(NewEmp);
+                }
+                res = true;
+            }
             return res;
         }
 
@@ -146,6 +203,7 @@ namespace SecurityTest
         {
             if (!LoadData())
                 Close();
+            AutoSet_Emp = LoadEmpData();
         }
 
         private void label7_Click(object sender, EventArgs e)
