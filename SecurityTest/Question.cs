@@ -16,9 +16,13 @@ namespace SecurityTest
         /// </summary>
         public string Text;
         /// <summary>
+        /// Картинка
+        /// </summary>
+        public string PictureQ;
+        /// <summary>
         /// Варианты ответов
         /// </summary>
-        public List<string> Answer;
+        public List<Answers> Answer;
         /// <summary>
         /// Список ссылок на файлы рисунков
         /// </summary>
@@ -43,19 +47,19 @@ namespace SecurityTest
 
         public Question()
         {
-            Answer = new List<string>();
+            Answer = new List<Answers>();
 
         }
 
         public string getAnswer()
         {
             string res = "";
-            foreach (string SSS in Answer)
+            foreach (Answers SSS in Answer)
             {
                 if (res.Length == 0)
-                    res = SSS; 
+                    res = SSS.Text; 
                 else
-                    res += "@" + SSS.Trim().Replace("\n","").Replace("\r", "");
+                    res += "@" + SSS.Text.Trim().Replace("\n","").Replace("\r", "");
             }
             return res;
         }
@@ -66,9 +70,29 @@ namespace SecurityTest
             res.RemoveAll(ss => ss.Equals(string.Empty));
             for (int i = 0; i < res.Count; i++)
             {
-                Answer.Add(res[i]);
+                Answers newOb = new Answers();
+                newOb.Text = res[i];
+                newOb.originIndex = i + 1;
+                Answer.Add(newOb);
             }
-            
+        }
+
+        public void setAnswer(Answers[] Arr)
+        {
+            Answer.AddRange(Arr);
+        }
+
+        public override string ToString()
+        {
+            int maxLen = Text.Length;
+            if (maxLen > 28)
+                maxLen = 25;
+            string SSS = Num.ToString() + ". ";
+            if (Text.Length > 0)
+                SSS += Text.Substring(0, maxLen) + "... ";
+            if (PictureQ.Length > 0)
+                SSS += " [Изображение]";
+            return SSS;
         }
     }
 }

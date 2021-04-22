@@ -40,12 +40,12 @@ namespace SecurityTest
             labQ.Text = curQ.Text;
             panAnswer.Controls.Clear();
             labelQNum.Text = indexCurentQ.ToString();
-            foreach (string SSS in curQ.Answer)
+            foreach (Answers SSS in curQ.Answer)
             {
                 RadioButton newRB = new RadioButton();
                 newRB.Font = labQ.Font;
                 newRB.AutoSize = true;
-                newRB.Text = SSS;
+                newRB.Text = SSS.Text;
                 panAnswer.Controls.Add(newRB);
                 newRB.CheckedChanged += NewRB_CheckedChanged;
                 newRB.MouseEnter += NewRB_MouseEnter;

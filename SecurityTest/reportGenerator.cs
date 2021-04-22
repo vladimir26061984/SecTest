@@ -260,8 +260,8 @@ namespace SecurityTest
                 //row1.Cells[5].MergeDown = 1;
 
                 string paragText = list[i].Text;
-                foreach (string SSS in list[i].Answer)
-                    paragText += Environment.NewLine + SSS;
+                foreach (Answers SSS in list[i].Answer)
+                    paragText += Environment.NewLine + SSS.Text;
                 row1.Cells[0].AddParagraph(paragText);
                 row1.Cells[1].AddParagraph(list[i].UserAnswer.ToString());
                 row1.Cells[2].AddParagraph(list[i].ValidAnswer.ToString());
