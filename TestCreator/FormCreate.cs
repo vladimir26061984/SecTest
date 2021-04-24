@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -22,13 +23,6 @@ namespace TestCreator
         
         OpenFileDialog ofd = new OpenFileDialog();
 
-        private void NextOb()
-        {
-            Curent = new SecurityTest.Question();
-            Curent.Num = LIST.Count + 1;
-            label6.Text = Curent.Num.ToString();
-        }
-
         public FormCreate()
         {
             InitializeComponent();
@@ -36,15 +30,43 @@ namespace TestCreator
             ofd.InitialDirectory = Application.ExecutablePath;
             ofd.Title = "Загрузка изображения";
             ofd.Filter = "Все файлы (*.*)|*.*";
+            
+            linkLabel1.BackColor = Color.Transparent;
+            //linkLabel1.Parent = pictureBox1;
 
-            NextOb();
+            tableLayoutPanel1.RowCount = 0;
+            tableLayoutPanel1.RowStyles.Clear();
+            tableLayoutPanel1.RowCount++;
+            // для добавления варианта
+            LinkLabel addLabel = new LinkLabel();
+            addLabel.Text = "Добавить вариант ответа...";
+            addLabel.AutoSize = true;
+            addLabel.Click += AddLabel_Click;
+            addLabel.Dock = DockStyle.Top;
+            addLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(addLabel, 1, 0);
+            // для удаления варианта
+            LinkLabel delLabel = new LinkLabel();
+            delLabel.Text = "Удалить последний...";
+            delLabel.AutoSize = true;
+            delLabel.Click += DelLabel_Click;
+            delLabel.Dock = DockStyle.Top;
+            delLabel.TextAlign = ContentAlignment.TopLeft;
+            delLabel.Visible = false;
+            tableLayoutPanel1.Controls.Add(delLabel, 2, 0);
 
-
+            AddNext();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             SaveDS();
+            button1.BackColor = SystemColors.Control;
+        }
+
+        private void DataIsChange()
+        {
+            button1.BackColor = SystemColors.ActiveCaption;
         }
 
         private void SaveTable()
@@ -110,7 +132,10 @@ namespace TestCreator
                 DataRow RRR = ttt.NewRow();
                 RRR["Num"] = ob.Num;
                 RRR["Text"] = ob.Text;
-                RRR["PictureQ"] = "";
+                if (ob.PictureQ.Length > 0)
+                    RRR["PictureQ"] = ob.PictureQ;
+                else
+                    RRR["PictureQ"] = "";
                 int index_and = 1;
                 foreach (SecurityTest.Answers ans in ob.Answer)
                 {
@@ -118,7 +143,10 @@ namespace TestCreator
                     RRR_A["Num"] = ob.Num;
                     RRR_A["Index"] = index_and.ToString();
                     RRR_A["Text"] = ans.Text;
-                    RRR_A["PictureA"] = "";//загруженная картинка
+                    if (ans.PictureA.Length > 0)
+                        RRR_A["PictureA"] = ans.PictureA;
+                    else
+                        RRR_A["PictureA"] = "";//загруженная картинка
                     vvv.Rows.Add(RRR_A);
                     index_and++;
                 }
@@ -131,107 +159,15 @@ namespace TestCreator
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Curent.Text = textBox2.Text;
-            //string[] ans = textBox3.Text.Split('\n').ToList();
-            List<string> ans = textBox3.Text.Split('\n').ToList();
-            ans.RemoveAll(ss => ss.Equals(string.Empty));
-            if (textBox4.Text.Length > 0)
-            for (int i = 1; i <= ans.Count; i++)
-            {
-                if (ans[i - 1].Contains(textBox4.Text))
-                {
-                    ans[i - 1] = ans[i - 1].Replace(textBox4.Text, "");
-                    Curent.ValidAnswer = i;
-                }
-            }
-            if (Curent.ValidAnswer == 0)
-            {
-                if (textBox4.Text.Length == 0)
-                {
-                    if (MessageBox.Show("Не определено значение строки [Признак верного ответа]. Этой строкой маркируется правильный ответ" + Environment.NewLine +
-                        "Если нажать 'Да', то будет предложена строка по-умолчанию. 'Нет' - вы укажите строку самостоятельно.", "Внимание! Неполные данные", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        textBox4.Text = "(+)";
-                    }
-                }
-                else
-                    MessageBox.Show("Для текущего блока не определен правильный ответ. Убедитесь, что значение строки [Признак верного ответа] находится в конце одного из вариатов ответа.", "Ошибка ввода", MessageBoxButtons.OK);
-                return;
-            }
-            //Curent.Answer = ans;
-            LIST.Add(Curent);
-            //SaveTable(); //сохранение текущего состояния
-            SaveDS();
-            NextOb();
-            textBox2.Text = "";
-            textBox3.Text = "";
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                //string tablename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-                //textBox1.Text = tablename;
-                //ttt = new DataTable(tablename);
-                //ttt.ReadXmlSchema(ofd.FileName);
-                //ttt.ReadXml(ofd.FileName);
-                //LIST.Clear();
-                //foreach (DataRow RRR in ttt.Rows)
-                //{
-
-                //    Curent.Num = int.Parse(RRR["Num"].ToString());
-                //    Curent.Text = RRR["Text"].ToString();
-                //    Curent.setAnswer(RRR["Answer"].ToString());
-                //    Curent.ValidAnswer = int.Parse(RRR["Valid"].ToString());
-                //    LIST.Add(Curent);
-                //    NextOb();
-                //}
-                //fileName = ofd.FileName;
-                //button2.Enabled = true;
-
-                string tablename = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName);
-                textBox1.Text = tablename;
-                fileName = ofd.FileName;
-                LoadDS();
-
-                /*
-                 foreach (SecurityTest.Question ob in LIST)
-                    {
-                        DataRow RRR = ttt.NewRow();
-                        RRR["Num"] = ob.Num;
-                        RRR["Text"] = ob.Text;
-                        int index_and = 1;
-                        foreach (string ans in ob.Answer)
-                        {
-                            DataRow RRR_A = vvv.NewRow();
-                            RRR_A["Num"] = index_and.ToString();
-                            RRR_A["Text"] = ans;
-                            vvv.Rows.Add(RRR_A);
-                            index_and++;
-                        }
-                        RRR["Valid"] = ob.ValidAnswer;
-                        ttt.Rows.Add(RRR);
-                    }
-                 
-                 */
-
-                
-               
-            }
-        }
-
         public void LoadDS()
         {
             CreateDS();
             DS.ReadXml(fileName);
-
+            comboBox1.Items.Clear();
             LIST.Clear();
             foreach (DataRow RRR in DS.Tables[0].Rows)
             {
+                Curent = new SecurityTest.Question();
                 Curent.Num = int.Parse(RRR["Num"].ToString());
                 Curent.Text = RRR["Text"].ToString();
                 Curent.PictureQ = RRR["PictureQ"].ToString();
@@ -243,7 +179,7 @@ namespace TestCreator
                     {
                         //Answer += "@" + RRR_And["Text"].ToString();
                         SecurityTest.Answers newOb = new SecurityTest.Answers();
-                        newOb.PictureA = "";
+                        newOb.PictureA = RRR_And["PictureA"].ToString();
                         newOb.originIndex = int.Parse(RRR_And["Index"].ToString());
                         newOb.Text = RRR_And["Text"].ToString();
                         tmp_lst.Add(newOb);
@@ -252,161 +188,371 @@ namespace TestCreator
                 Curent.setAnswer(tmp_lst.ToArray());
                 Curent.ValidAnswer = int.Parse(RRR["IndexValid"].ToString());
                 LIST.Add(Curent);
-                NextOb();
+                
             }
-            fileName = ofd.FileName;
+            
+            textBox1.Text = fileName;
             comboBox1.Items.AddRange(LIST.ToArray());
-            button2.Enabled = true;
+            AddNext();
+            
         }
-
-     
-
-        private void textBox3_KeyDown(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Добавляет в конец списка 
+        /// </summary>
+        private void AddNext()
         {
-            int index = textBox3.SelectionStart;
-            if (e.KeyCode == Keys.F3)
-            {
-                string sss = textBox3.Text;
-                int len = sss.Length;
-                int iEnd = sss.IndexOf("\r\n", index);
-                if (iEnd == -1)
-                {
-                    sss += " " + textBox4.Text;
-                }
-                else
-                {
-                    sss =  sss.Insert(iEnd, " " + textBox4.Text);
-                }
-                textBox3.Text = sss;
-            }
+            SecurityTest.Question lastOb = new SecurityTest.Question();
+            lastOb.Num = comboBox1.Items.Count + 1;
+            lastOb.PictureQ = "";
+            lastOb.Text = "Новый вопрос...";
+            LIST.Add(lastOb);
+            comboBox1.Items.Add(lastOb);
+            comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+            DataIsChange();
         }
+
 
         private void FormCreate_Shown(object sender, EventArgs e)
         {
             textBox1.Text = fileName;
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
+        private void CreateAnswer(SecurityTest.Question SelectItem, SecurityTest.Answers item, int j)
         {
-            TextBox t1 = new TextBox();
-            t1.Width = textBox1.Width;
-            tableLayoutPanel1.Controls.Add(t1);
+            tableLayoutPanel1.RowCount++;
+            //tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, pictureBox1.Height));
+            Label lll = new Label();
+            TextBox tb = new TextBox();
+            lll.Text = item.originIndex.ToString();
+            tb.TextChanged += Lll_TextChanged;
+            tb.Name = "tb" + j.ToString();
+            lll.Name = "lab" + j.ToString();
+            lll.Height = 30;
+            tb.Text = item.Text;
+
+            tableLayoutPanel1.Controls.Add(lll, 0, j);
+            tableLayoutPanel1.Controls.Add(tb, 1, j);
+
+            lll.Dock = DockStyle.Fill;
+            lll.Font = label6.Font;
+            lll.TextAlign = ContentAlignment.MiddleCenter;
+            tb.Multiline = true;
+            tb.Dock = DockStyle.Fill;
+            Panel PPP = CreatePanel(j);
+            PPP.Name = "pan" + j.ToString();
+            tableLayoutPanel1.Controls.Add(PPP, 2, j);
+            PPP.Dock = DockStyle.Fill;
+            RadioButton rb = new RadioButton();
+            rb.Name = "rb" + j.ToString();
+            rb.Dock = DockStyle.Fill;
+            rb.TextAlign = ContentAlignment.MiddleCenter;
+            if (SelectItem.ValidAnswer == (j + 1))
+                rb.Checked = true;
+            else
+                rb.Checked = false;
+            rb.CheckedChanged += Rb_CheckedChanged;
+            tableLayoutPanel1.Controls.Add(rb, 3, j);
+        }
+
+        private void Rb_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = (sender as RadioButton);
+            if (rb.Checked)
+            {
+                int IndexAnswer = int.Parse(rb.Name.Replace("rb", ""));
+                (comboBox1.SelectedItem as SecurityTest.Question).ValidAnswer = IndexAnswer+1;
+                DataIsChange();
+            }
+        }
+
+        private void Lll_TextChanged(object sender, EventArgs e)
+        {
+            TextBox tb = (sender as TextBox);
+            int IndexAnswer = int.Parse(tb.Name.Replace("tb", ""));
+            (comboBox1.SelectedItem as SecurityTest.Question).Answer[IndexAnswer].Text = tb.Text;
+            DataIsChange();
+        }
+
+        private void ClearLayout()
+        {
+            for (int i = tableLayoutPanel1.Controls.Count - 1; i >= 0; i--)
+            {
+                tableLayoutPanel1.Controls.RemoveAt(i);
+            }
+
+            tableLayoutPanel1.RowCount = 0;
+            tableLayoutPanel1.RowStyles.Clear();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             tableLayoutPanel1.SuspendLayout();
 
-            for (int i = tableLayoutPanel1.Controls.Count - 1; i >= 0; i--)
-            {
-                tableLayoutPanel1.Controls.RemoveAt(i);
-                tableLayoutPanel1.RowStyles.RemoveAt(0);
-            }
+            ClearLayout();
 
-            tableLayoutPanel1.RowCount = 0;
-            tableLayoutPanel1.RowStyles.Clear();
             SecurityTest.Question SelectItem = (SecurityTest.Question) comboBox1.SelectedItem;
+            label6.Text = (comboBox1.SelectedIndex + 1).ToString();
             textBox2.Text = SelectItem.Text;
             int j = 0;
+            tableLayoutPanel1.RowCount++;
             foreach (SecurityTest.Answers item in SelectItem.Answer)
             {
-                tableLayoutPanel1.RowCount++;
-                //tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                Label lll = new Label();
-                TextBox tb = new TextBox();
-                lll.Text = item.originIndex.ToString();
-                tb.Text = item.Text;
-
-                //tableLayoutPanel1.Controls.Add(lll);
-
-                tableLayoutPanel1.Controls.Add(lll,0,j);
-                tableLayoutPanel1.Controls.Add(tb, 1, j);
-
-                lll.Dock = DockStyle.Fill;
-                tb.Dock = DockStyle.Fill;
-
-                //tableLayoutPanel1.RowCount++;
-                //tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                //TextBox tb = new TextBox();
-                //tb.Text = item.Text;
-                //tableLayoutPanel1.Controls.Add(tb);
-
-                tableLayoutPanel1.RowCount++;
-                tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                PictureBox pbox = new PictureBox();
-                if (item.PictureA.Length > 0)
-                    pbox.Height = tableLayoutPanel1.Width;
-                else
-                    pbox.Height = 20;
-                tableLayoutPanel1.Controls.Add(pbox);
+                CreateAnswer(SelectItem, item, j);
                 j++;
             }
+            // для добавления варианта
+            LinkLabel addLabel = new LinkLabel();
+            addLabel.Text = "Добавить вариант ответа...";
+            addLabel.AutoSize = true;
+            addLabel.Click += AddLabel_Click;
+            addLabel.Dock = DockStyle.Top;
+            addLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(addLabel, 1, j);
 
+            // для удаления варианта
+            LinkLabel delLabel = new LinkLabel();
+            delLabel.Text = "Удалить последний...";
+            delLabel.AutoSize = true;
+            delLabel.Click += DelLabel_Click;
+            delLabel.Dock = DockStyle.Top;
+            delLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(delLabel, 2, j);
+            if (j == 0)
+                delLabel.Visible = false;
+            tableLayoutPanel1.ResumeLayout();
+            if (SelectItem.PictureQ.Length > 0)
+            {
+                //pictureBox1.Visible = true;
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = stringToImage(SelectItem.PictureQ);
+            }
+            else
+            {
+                pictureBox1.Image = null;
+                //pictureBox1.Visible = false;
+            }
+
+        }
+
+        private void AddLabel_Click(object sender, EventArgs e)
+        {
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel1.Controls.RemoveAt(tableLayoutPanel1.Controls.Count - 1);
+            tableLayoutPanel1.Controls.RemoveAt(tableLayoutPanel1.Controls.Count - 1);
+            if (tableLayoutPanel1.RowCount > 1)
+                tableLayoutPanel1.RowCount--;
+
+            SecurityTest.Question SelectItem = (SecurityTest.Question)comboBox1.SelectedItem;
+            int j = SelectItem.Answer.Count;
+            tableLayoutPanel1.RowCount++;
+            
+            CreateAnswer(SelectItem, SelectItem.NewAnswer(), j);
+            j++;
+            //для добавления варианта
+            LinkLabel addLabel = new LinkLabel();
+            addLabel.Text = "Добавить новый вариант ответа...";
+            addLabel.AutoSize = true;
+            addLabel.Click += AddLabel_Click;
+            addLabel.Dock = DockStyle.Top;
+            addLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(addLabel, 1, j);
+            // для удаления
+            LinkLabel delLabel = new LinkLabel();
+            delLabel.Text = "Удалить последний...";
+            delLabel.AutoSize = true;
+            delLabel.Click += DelLabel_Click; 
+            delLabel.Dock = DockStyle.Top;
+            delLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(delLabel, 2, j);
+            if (j == 0)
+                delLabel.Visible = false;
+            DataIsChange();
+            tableLayoutPanel1.ResumeLayout();
+
+        }
+
+        private void DelLabel_Click(object sender, EventArgs e)
+        {
+            tableLayoutPanel1.SuspendLayout();
+            int indexDel = (comboBox1.SelectedItem as SecurityTest.Question).Answer.Count - 1;
+            (comboBox1.SelectedItem as SecurityTest.Question).Answer.RemoveAt(indexDel);
+            tableLayoutPanel1.Controls.RemoveByKey("pan" + indexDel.ToString());
+            tableLayoutPanel1.Controls.RemoveByKey("lab" + indexDel.ToString());
+            tableLayoutPanel1.Controls.RemoveByKey("tb" + indexDel.ToString());
+            tableLayoutPanel1.Controls.RemoveByKey("rb" + indexDel.ToString());
+
+            tableLayoutPanel1.Controls.RemoveAt(tableLayoutPanel1.Controls.Count - 1);
+            tableLayoutPanel1.Controls.RemoveAt(tableLayoutPanel1.Controls.Count - 1);
+
+            tableLayoutPanel1.RowCount--;
+
+            //для добавления варианта
+            LinkLabel addLabel = new LinkLabel();
+            addLabel.Text = "Добавить новый вариант ответа...";
+            addLabel.AutoSize = true;
+            addLabel.Click += AddLabel_Click;
+            addLabel.Dock = DockStyle.Top;
+            addLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(addLabel, 1, indexDel);
+            // для удаления
+            LinkLabel delLabel = new LinkLabel();
+            delLabel.Text = "Удалить последний...";
+            delLabel.AutoSize = true;
+            delLabel.Click += DelLabel_Click;
+            delLabel.Dock = DockStyle.Top;
+            delLabel.TextAlign = ContentAlignment.TopLeft;
+            tableLayoutPanel1.Controls.Add(delLabel, 2, indexDel);
+            if (indexDel == 0)
+                delLabel.Visible = false;
+            DataIsChange();
             tableLayoutPanel1.ResumeLayout();
         }
 
-        private void linkLabel1_Click(object sender, EventArgs e)
+        private Panel CreatePanel(int indexAnswer)
         {
-            //// Configure open file dialog box 
-            //OpenFileDialog dlg = new OpenFileDialog();
-            //dlg.Filter = "";
+            Panel pan = new Panel();
+            pan.Width = pictureBox1.Width;
+            pan.Height = pictureBox1.Height;
+            LinkLabel llab = new LinkLabel();
+            llab.Text = "Выбрать картинку...";
+            llab.AutoSize = true;
+            llab.Click += Llab_Click;
+            PictureBox pbox = new PictureBox();
+            pbox.Visible = true;
+            pbox.Name = "ib";
+            pbox.Width = pan.Width;
+            pbox.Height = pan.Height;
+            if ((comboBox1.SelectedItem as SecurityTest.Question).Answer[indexAnswer].PictureA.Length > 0)
+            {
+                pbox.Image = stringToImage((comboBox1.SelectedItem as SecurityTest.Question).Answer[indexAnswer].PictureA);
+                pbox.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
+            pbox.Click += pictureBox1_Click;
+            pbox.Dock = DockStyle.Fill;
+            pan.Controls.Add(pbox);
+            //pan.Controls.Add(llab);
+            llab.Parent = pbox;
+            llab.BackColor = Color.Transparent;
+            llab.Dock = DockStyle.Top;
+            llab.TextAlign = ContentAlignment.MiddleCenter;
+            return pan;
+        }
 
-            //ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
-            //string sep = string.Empty;
-
-            //foreach (var c in codecs)
-            //{
-            //    string codecName = c.CodecName.Substring(8).Replace("Codec", "Files").Trim();
-            //    dlg.Filter = String.Format("{0}{1}{2} ({3})|{3}", dlg.Filter, sep, codecName, c.FilenameExtension);
-            //    sep = "|";
-            //}
-
-            ////dlg.Filter = String.Format("{0}{1}{2} ({3})|{3}", dlg.Filter, sep, "All Files", "*.*");
-
-            //dlg.DefaultExt = ".png"; // Default file extension 
-
+        private void Llab_Click(object sender, EventArgs e)
+        {
             Bitmap image; //Bitmap для открываемого изображения
-
             OpenFileDialog open_dialog = new OpenFileDialog(); //создание диалогового окна для выбора файла
             open_dialog.Filter = "Файлы изображений(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*"; //формат загружаемого файла
             if (open_dialog.ShowDialog() == DialogResult.OK) //если в окне была нажата кнопка "ОК"
             {
-                // Open document 
-                //string fileName = dlg.FileName;
-                //pictureBox1.Load(dlg.FileName);
-                //pictureBox1.Visible = true;
-                //pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-                //// Do something with fileName  
-
                 try
                 {
-                    //image = new Bitmap(open_dialog.FileName);
-                    ////вместо pictureBox1 укажите pictureBox, в который нужно загрузить изображение 
-                    //pictureBox1.Visible = true;
-                    //pictureBox1.Image = image;
-                    ////pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-                    ////pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-                    //pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    //pictureBox1.Invalidate();
+                    PictureBox pbox = (sender as Control).Parent as PictureBox;
+                    //PictureBox pbox = (PictureBox)pan.Controls.Find("ib",false)[0];
+                    pbox.Visible = true;
+                    pbox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pbox.Image = Image.FromFile(open_dialog.FileName);
 
-                    pictureBox1.Visible = true;
-                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pictureBox1.Image = Image.FromFile(open_dialog.FileName);
+                    Panel pan = pbox.Parent as Panel;
+                    int IndexAnswer = int.Parse(pan.Name.Replace("pan",""));
+                    using (Image UseImage = Image.FromFile(open_dialog.FileName))
+                    {
+                        using (System.IO.MemoryStream m = new System.IO.MemoryStream())
+                        {
+                            UseImage.Save(m, UseImage.RawFormat);
+                            byte[] imageBytes = m.ToArray();
+                            string base64String = Convert.ToBase64String(imageBytes);
+                            (comboBox1.SelectedItem as SecurityTest.Question).Answer[IndexAnswer].PictureA = base64String;
+                            DataIsChange();
+                        }
+                    }
                 }
                 catch
                 {
-                    DialogResult rezult = MessageBox.Show("Невозможно открыть выбранный файл",
+                    DialogResult rezult = MessageBox.Show("Невозможно открыть либо преобразовать в строку выбранный файл",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
+        private void linkLabel1_Click(object sender, EventArgs e)
+        {
+            Bitmap image;
+            OpenFileDialog open_dialog = new OpenFileDialog(); //создание диалогового окна для выбора файла
+            open_dialog.Filter = "Файлы изображений(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*"; //формат загружаемого файла
+            if (open_dialog.ShowDialog() == DialogResult.OK) //если в окне была нажата кнопка "ОК"
+            {
+                try
+                {
+                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBox1.Image = Image.FromFile(open_dialog.FileName);
+
+                    using (Image UseImage = Image.FromFile(open_dialog.FileName))
+                    {
+                        using (System.IO.MemoryStream m = new System.IO.MemoryStream())
+                        {
+                            UseImage.Save(m, UseImage.RawFormat);
+                            byte[] imageBytes = m.ToArray();
+                            string base64String = Convert.ToBase64String(imageBytes);
+                            (comboBox1.SelectedItem as SecurityTest.Question).PictureQ = base64String;
+                            DataIsChange();
+                        }
+                    }
+                }
+                catch
+                {
+                    DialogResult rezult = MessageBox.Show("Невозможно открыть либо преобразовать в строку выбранный файл",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public Image stringToImage(string inputString)
+        {
+            byte[] imageBytes = Convert.FromBase64String(inputString);
+            MemoryStream ms = new MemoryStream(imageBytes);
+            Image image = Image.FromStream(ms, true, true);
+            return image;
+        }
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            FormPic fp = new FormPic();
-            fp.pictureBox1.Image = pictureBox1.Image;
-            fp.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            fp.ShowDialog();
+            PictureBox pic = (sender as PictureBox);
+            if (pic.Image != null)
+            {
+                FormPic fp = new FormPic();
+                fp.pictureBox1.Image = pic.Image;
+                fp.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                fp.ShowDialog();
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            (comboBox1.SelectedItem as SecurityTest.Question).Text = textBox2.Text;
+            DataIsChange();
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            AddNext();
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите удалить вопрос №"+label6.Text + " ?","Подтвердите",MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                int selectInd = comboBox1.SelectedIndex;
+                LIST.RemoveAt(comboBox1.SelectedIndex);
+                comboBox1.Items.RemoveAt(selectInd);
+                if (selectInd > comboBox1.Items.Count - 1)
+                    selectInd = comboBox1.Items.Count - 1;
+                if (comboBox1.Items.Count > 0)
+                    comboBox1.SelectedIndex = selectInd;
+                else
+                    ClearLayout();
+            }
         }
     }
 }

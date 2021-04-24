@@ -29,7 +29,7 @@ namespace SecurityTest
         public List<string> PathFile;
 
         /// <summary>
-        /// Вариант правильного ответа
+        /// Вариант правильного ответа от 1
         /// </summary>
         public int ValidAnswer;
 
@@ -49,6 +49,16 @@ namespace SecurityTest
         {
             Answer = new List<Answers>();
 
+        }
+
+        public Answers NewAnswer()
+        {
+            Answers newOb = new Answers();
+            newOb.Text = "";
+            newOb.PictureA = "";
+            newOb.originIndex = Answer.Count+1;
+            Answer.Add(newOb);
+            return newOb;
         }
 
         public string getAnswer()

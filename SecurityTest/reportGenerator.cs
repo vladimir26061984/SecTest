@@ -99,7 +99,7 @@ namespace SecurityTest
 
             // Put a logo in the header
             //Image image = section.Headers.Primary.AddImage(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", "icon.bmp")); //("../../PowerBooks.png");
-            Image image = section.AddImage(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", "icon.bmp")); //("../../PowerBooks.png");
+            Image image = section.AddImage(System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result"), "icon.bmp")); //("../../PowerBooks.png");
             image.Height = "2.5cm";
             image.LockAspectRatio = true;
             image.RelativeVertical = RelativeVertical.Line;

@@ -152,7 +152,7 @@ namespace SecurityTest
                 string FIO = labelCurEmp.Text.Replace("Сдает тест: ", "");
                 string[] FIO_Arr = FIO.Split("".ToArray(), StringSplitOptions.RemoveEmptyEntries);
                 string filename = TTT.TableName + " " + FIO_Arr[0] + " " + FIO_Arr[1][0] + FIO_Arr[2][0] + " " + curDT.Replace(".", "-").Replace(":", "-");
-                string pathRes = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result", filename + ".pdf");
+                string pathRes = System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "result"), filename + ".pdf");
                 List<string> userParam = new List<string>();
                 List<Question> list = new List<Question>();
                 MessageBox.Show("Тестирование завершено. Правильных ответов: " + countOk.ToString() + " из " + maxCountValue.ToString() + " вопросов.");

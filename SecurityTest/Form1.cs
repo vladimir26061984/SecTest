@@ -162,7 +162,7 @@ namespace SecurityTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data", comboBox1.SelectedItem.ToString() + ".xml") ;
+            string path = System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data"), comboBox1.SelectedItem.ToString() + ".xml") ;
             int maxQCount = 10;
             CriteriaList.Clear();
             int OkValue = maxQCount;
@@ -170,7 +170,7 @@ namespace SecurityTest
             string Error = "";
             try
             {
-                using (StreamReader readtext = new StreamReader(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data", "SecurityTest.conf")))
+                using (StreamReader readtext = new StreamReader(System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "Data"), "SecurityTest.conf")))
                 {
                     string sText = "";
                     do
