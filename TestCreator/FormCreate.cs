@@ -205,10 +205,27 @@ namespace TestCreator
             lastOb.Num = comboBox1.Items.Count + 1;
             lastOb.PictureQ = "";
             lastOb.Text = "Новый вопрос...";
+            //for (int i = 0; i < comboBox1.Items.Count; i++)
+            //    (comboBox1.Items[i] as SecurityTest.Question).Text 
             LIST.Add(lastOb);
-            comboBox1.Items.Add(lastOb);
+
+            UpdateComboBox(false);
             comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
             DataIsChange();
+            comboBox1.Update();
+        }
+
+        private void UpdateComboBox(bool optional_last_selected)
+        {
+            int selected_index = comboBox1.SelectedIndex;
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(LIST.ToArray());
+            if (optional_last_selected)
+            {
+                comboBox1.SelectedIndexChanged -= comboBox1_SelectedIndexChanged;
+                comboBox1.SelectedIndex = selected_index;
+                comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            }
         }
 
 
@@ -532,6 +549,7 @@ namespace TestCreator
         {
             (comboBox1.SelectedItem as SecurityTest.Question).Text = textBox2.Text;
             DataIsChange();
+            UpdateComboBox(true);
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -553,6 +571,35 @@ namespace TestCreator
                 else
                     ClearLayout();
             }
+        }
+
+        private void FormCreate_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
+        }
+
+        private void FormCreate_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (button1.BackColor == SystemColors.ActiveCaption)
+            {
+                DialogResult res = MessageBox.Show("На форме имеются несохраненные данные. Сохранить перед выходом?" + Environment.NewLine +
+                    "Да - сохранить и выйти;" + Environment.NewLine +
+                    "Нет - выйти без сохранения;" + Environment.NewLine +
+                    "Отмена - отменить выход", "Нужно выбрать вариант ответа", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    e.Cancel = false;
+                    if (res == DialogResult.Yes)
+                        SaveDS();
+                }
+                
+            }
+            
         }
     }
 }

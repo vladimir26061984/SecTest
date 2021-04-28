@@ -211,9 +211,10 @@
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Location = new System.Drawing.Point(574, 136);
+            this.linkLabel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.linkLabel1.Location = new System.Drawing.Point(574, 109);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(109, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(111, 15);
             this.linkLabel1.TabIndex = 16;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Выбрать картинку...";
@@ -268,6 +269,8 @@
             this.Name = "FormCreate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Создание тестов";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormCreate_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCreate_FormClosed);
             this.Shown += new System.EventHandler(this.FormCreate_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
