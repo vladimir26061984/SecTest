@@ -69,30 +69,6 @@ namespace TestCreator
             button1.BackColor = SystemColors.ActiveCaption;
         }
 
-        private void SaveTable()
-        {
-            ttt = new DataTable(textBox1.Text);
-            DataColumn ccc = new DataColumn("Num", typeof(int));
-            ttt.Columns.Add(ccc);
-            ccc = new DataColumn("Text", typeof(string));
-            ttt.Columns.Add(ccc);
-            //ccc = new DataColumn("Answer", typeof(List<string>));
-            ccc = new DataColumn("Answer", typeof(string));
-            ttt.Columns.Add(ccc);
-            ccc = new DataColumn("Valid", typeof(int));
-            ttt.Columns.Add(ccc);
-
-            foreach (SecurityTest.Question ob in LIST)
-            {
-                DataRow RRR = ttt.NewRow();
-                RRR["Num"] = ob.Num;
-                RRR["Text"] = ob.Text;
-                RRR["Answer"] = ob.getAnswer();
-                RRR["Valid"] = ob.ValidAnswer;
-                ttt.Rows.Add(RRR);
-            }
-            ttt.WriteXml(fileName, true);
-        }
 
         private void CreateDS()
         {
