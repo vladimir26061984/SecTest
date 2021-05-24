@@ -259,9 +259,16 @@ namespace SecurityTest
                 //row1.Cells[5].Shading.Color = TableGray;
                 //row1.Cells[5].MergeDown = 1;
 
-                string paragText = list[i].Text;
+                string paragText = list[i].Text.Length == 0 ? "Вопрос №"+(i+1).ToString() : list[i].Text;
+                string next_part = "";
+                int var_ind = 1;
                 foreach (Answers SSS in list[i].Answer)
-                    paragText += Environment.NewLine + SSS.Text;
+                {
+                    next_part = SSS.Text.Length == 0 ? "вариант " + var_ind.ToString() : SSS.Text;
+                    //paragText += Environment.NewLine + SSS.Text;
+                    paragText += Environment.NewLine + next_part;
+                    var_ind++;
+                }
                 row1.Cells[0].AddParagraph(paragText);
                 row1.Cells[1].AddParagraph(list[i].UserAnswer.ToString());
                 row1.Cells[2].AddParagraph(list[i].ValidAnswer.ToString());

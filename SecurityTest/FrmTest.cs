@@ -305,7 +305,12 @@ namespace SecurityTest
                 //Inst.TTT.ReadXmlSchema(testFileName);
                 //Inst.TTT.ReadXml(testFileName);
                 Inst.LoadDS(testFileName);
-                if (Inst.maxCountValue > Inst.ttt.Rows.Count) Inst.maxCountValue = Inst.ttt.Rows.Count;
+                if (Inst.maxCountValue > Inst.ttt.Rows.Count || Inst.maxCountValue == 0)
+                {
+                    Inst.maxCountValue = Inst.ttt.Rows.Count;
+                    if (Inst.maxCountValue == 0)
+                        Form1.CriteriaList[0] = Inst.maxCountValue;
+                }
                 Inst.Text = "Выполнение теста. Осталось вопросов: " + Inst.maxCountValue;
                 for (i = 0; i < Inst.maxCountValue; i++)
                 {

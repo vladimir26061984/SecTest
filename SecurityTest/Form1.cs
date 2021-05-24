@@ -200,16 +200,22 @@ namespace SecurityTest
                 }
             }
             catch (Exception exc)
-            { 
-            
+            {
+                Error = "Ошибка при поиске параметров теста в файле настроек [...\\data\\SecurityTest.conf].";
             }
-            
-            
+
+
             if (Error.Length > 0)
                 if (MessageBox.Show(Error + Environment.NewLine + "Если нажмете 'Да', то программа продолжиться со стандартными настройками", "Ошибка при чтении файла настройки для выбранной дисциплины", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 {
                     return;
                 }
+                else
+                {   
+                    if (CriteriaList.Count == 0)
+                        CriteriaList.Add(maxQCount); // на случай, чтобы избежать ошибки
+                }
+
 
             var strArr = dateTimePicker1.Value.Date.ToString().Split();
             var strDT_test = strArr[0] + " " + DateTime.Now.ToLongTimeString();

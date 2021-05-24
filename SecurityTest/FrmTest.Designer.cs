@@ -30,19 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.labelCurEmp = new System.Windows.Forms.Label();
+            this.labelHint = new System.Windows.Forms.Label();
+            this.buttonNext = new System.Windows.Forms.Button();
             this.labelQNum = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.labelCurEmp = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.buttonNext = new System.Windows.Forms.Button();
             this.panelQ = new System.Windows.Forms.Panel();
-            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.labQ = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBoxQ = new System.Windows.Forms.PictureBox();
-            this.labelHint = new System.Windows.Forms.Label();
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.panelAnswer = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.labQ = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panelQ.SuspendLayout();
@@ -64,15 +64,33 @@
             this.panel1.Size = new System.Drawing.Size(1116, 68);
             this.panel1.TabIndex = 0;
             // 
-            // labelCurEmp
+            // labelHint
             // 
-            this.labelCurEmp.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelCurEmp.Location = new System.Drawing.Point(0, 0);
-            this.labelCurEmp.Name = "labelCurEmp";
-            this.labelCurEmp.Size = new System.Drawing.Size(1116, 17);
-            this.labelCurEmp.TabIndex = 1;
-            this.labelCurEmp.Text = "Текущий сотрудник";
-            this.labelCurEmp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelHint.AutoSize = true;
+            this.labelHint.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.labelHint.ForeColor = System.Drawing.Color.Chocolate;
+            this.labelHint.Location = new System.Drawing.Point(0, 49);
+            this.labelHint.Margin = new System.Windows.Forms.Padding(3);
+            this.labelHint.Name = "labelHint";
+            this.labelHint.Padding = new System.Windows.Forms.Padding(3);
+            this.labelHint.Size = new System.Drawing.Size(454, 19);
+            this.labelHint.TabIndex = 10;
+            this.labelHint.Text = "Для просмотра изображения наведите на него курсор и нажмите левую кнопку мыши\r\n";
+            this.labelHint.Visible = false;
+            // 
+            // buttonNext
+            // 
+            this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonNext.BackColor = System.Drawing.Color.Khaki;
+            this.buttonNext.Enabled = false;
+            this.buttonNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonNext.Location = new System.Drawing.Point(899, 16);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(184, 49);
+            this.buttonNext.TabIndex = 9;
+            this.buttonNext.Text = "Далее";
+            this.buttonNext.UseVisualStyleBackColor = false;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
             // 
             // labelQNum
             // 
@@ -94,6 +112,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Вопрос №";
             // 
+            // labelCurEmp
+            // 
+            this.labelCurEmp.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelCurEmp.Location = new System.Drawing.Point(0, 0);
+            this.labelCurEmp.Name = "labelCurEmp";
+            this.labelCurEmp.Size = new System.Drawing.Size(1116, 17);
+            this.labelCurEmp.TabIndex = 1;
+            this.labelCurEmp.Text = "Текущий сотрудник";
+            this.labelCurEmp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSteelBlue;
@@ -102,20 +130,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1116, 23);
             this.panel2.TabIndex = 1;
-            // 
-            // buttonNext
-            // 
-            this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonNext.BackColor = System.Drawing.Color.Khaki;
-            this.buttonNext.Enabled = false;
-            this.buttonNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonNext.Location = new System.Drawing.Point(899, 16);
-            this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(184, 49);
-            this.buttonNext.TabIndex = 9;
-            this.buttonNext.Text = "Далее";
-            this.buttonNext.UseVisualStyleBackColor = false;
-            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
             // 
             // panelQ
             // 
@@ -129,14 +143,26 @@
             this.panelQ.Size = new System.Drawing.Size(319, 632);
             this.panelQ.TabIndex = 8;
             // 
-            // splitter1
+            // labQ
             // 
-            this.splitter1.BackColor = System.Drawing.Color.RoyalBlue;
-            this.splitter1.Location = new System.Drawing.Point(334, 73);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(5, 632);
-            this.splitter1.TabIndex = 9;
-            this.splitter1.TabStop = false;
+            this.labQ.BackColor = System.Drawing.Color.SeaShell;
+            this.labQ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labQ.Location = new System.Drawing.Point(5, 252);
+            this.labQ.Margin = new System.Windows.Forms.Padding(3);
+            this.labQ.Name = "labQ";
+            this.labQ.Padding = new System.Windows.Forms.Padding(3);
+            this.labQ.Size = new System.Drawing.Size(309, 375);
+            this.labQ.TabIndex = 20;
+            this.labQ.Text = "label2";
+            // 
+            // panel3
+            // 
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(5, 247);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(309, 5);
+            this.panel3.TabIndex = 17;
             // 
             // pictureBoxQ
             // 
@@ -150,19 +176,14 @@
             this.pictureBoxQ.TabStop = false;
             this.pictureBoxQ.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // labelHint
+            // splitter1
             // 
-            this.labelHint.AutoSize = true;
-            this.labelHint.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.labelHint.ForeColor = System.Drawing.Color.Chocolate;
-            this.labelHint.Location = new System.Drawing.Point(0, 49);
-            this.labelHint.Margin = new System.Windows.Forms.Padding(3);
-            this.labelHint.Name = "labelHint";
-            this.labelHint.Padding = new System.Windows.Forms.Padding(3);
-            this.labelHint.Size = new System.Drawing.Size(454, 19);
-            this.labelHint.TabIndex = 10;
-            this.labelHint.Text = "Для просмотра изображения наведите на него курсор и нажмите левую кнопку мыши\r\n";
-            this.labelHint.Visible = false;
+            this.splitter1.BackColor = System.Drawing.Color.RoyalBlue;
+            this.splitter1.Location = new System.Drawing.Point(334, 73);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(5, 632);
+            this.splitter1.TabIndex = 9;
+            this.splitter1.TabStop = false;
             // 
             // panelAnswer
             // 
@@ -184,7 +205,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -195,27 +216,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(792, 632);
             this.tableLayoutPanel1.TabIndex = 9;
-            // 
-            // panel3
-            // 
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(5, 247);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(309, 5);
-            this.panel3.TabIndex = 17;
-            // 
-            // labQ
-            // 
-            this.labQ.BackColor = System.Drawing.Color.SeaShell;
-            this.labQ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labQ.Location = new System.Drawing.Point(5, 252);
-            this.labQ.Margin = new System.Windows.Forms.Padding(3);
-            this.labQ.Name = "labQ";
-            this.labQ.Padding = new System.Windows.Forms.Padding(3);
-            this.labQ.Size = new System.Drawing.Size(309, 375);
-            this.labQ.TabIndex = 20;
-            this.labQ.Text = "label2";
             // 
             // timer1
             // 

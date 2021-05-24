@@ -183,7 +183,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(77, 13);
             this.label9.TabIndex = 10;
-            this.label9.Text = "Версия v0.0.4";
+            this.label9.Text = "Версия v0.0.5";
             this.label9.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label9_MouseDown);
             // 
             // label7
